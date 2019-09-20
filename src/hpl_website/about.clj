@@ -1,25 +1,25 @@
 (ns hpl-website.about
-  (:require [hpl-website.util :refer [hpl-page]]
-            [compojure.core :as compojure]))
+  (:require [compojure.core :as compojure]
+            [hpl-website.util :as util]))
 
 (def page-title "About")
 
 (defn index
   "About Root"
   [request]
-  (hpl-page  page-title
+  (util/hpl-page page-title
     [:div]))
 
 (defn research
   "About Root"
   [request]
-  (hpl-page page-title
+  (util/hpl-page page-title
     [:div]))
 
 (defn music
   "About Root"
   [request]
-  (hpl-page  page-title
+  (util/hpl-page page-title
     [:div]))
 
 (compojure/defroutes about-routes

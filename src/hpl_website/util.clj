@@ -27,7 +27,8 @@
   (el/unordered-list [(el/link-to "/index" "Home")
                       (nav-drop-down "/about" "About" {"research" "Research"
                                                        "music"    "Music"})
-                      (el/link-to "/contact" "Contact")]))
+                      (el/link-to "/contact" "Contact")
+                      (el/link-to "/blog" "Blog")]))
 
 (defn hpl-page
   [page-title content]

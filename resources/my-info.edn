@@ -3,4 +3,5 @@
  :school-link  "http://www.ucdenver.edu/academics/colleges/Graduate-School/academic-programs/computational-bioscience/Pages/home.aspx"
  :contact-info {"GitHub"   "https://github.com/tuh8888"
                 "Email"    "Harrison.Pielke-Lombardo@cuanschutz.edu"
-                "LinkedIn" "https://www.linkedin.com/in/tuh8888/"}}
+                "LinkedIn" "https://www.linkedin.com/in/tuh8888/"}
+ :blog {"9-20-2019" [:p "Today I went for a run."]}}
