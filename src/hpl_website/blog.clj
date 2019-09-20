@@ -48,8 +48,7 @@
     (case format
       "html" content
       "md" (md/md-to-html-string content)
-      content)]
-   (when hide-overflow? [:hr])])
+      content)]])
 
 (defn index
   [date title]
@@ -60,5 +59,7 @@
                       (filter #(util/=param? date util/url-friendly-date :date %)))]
        (if (= 1 (count blogs))
          (display-post false (first blogs))
-         (map #(display-post true %) blogs)))]))
+         (->> blogs
+              (map #(display-post true %))
+              (interpose [:hr]))))]))
 
