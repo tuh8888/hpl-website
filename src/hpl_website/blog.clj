@@ -20,15 +20,20 @@
                 (map (fn [blog] (update blog :date #(Date. ^String %))))
                 (sort-by :date)))
 
+(def display-date-format (SimpleDateFormat. "MMMM dd, yyyy"))
+
+(defn blog-url
+  "Unique link for a particular blog entry."
+  [{:keys [date title]}]
+  (hiccup-util/url "/blog" {:date  (util/url-friendly-date date)
+                            :title title}))
+
 (defn display-blog
   "Display blog"
-  [{:keys [date format title content]}]
+  [{:keys [date format title content] :as blog}]
   [:div.blog
-   [:h3 (el/link-to
-          (hiccup-util/url "/blog" {:date  (util/url-friendly-date date)
-                                    :title title})
-          title)]
-   [:p [:i (.format (SimpleDateFormat. "MMMM dd, yyyy") date)]]
+   [:h3 (el/link-to (blog-url blog) title)]
+   [:p [:i (.format ^SimpleDateFormat display-date-format date)]]
    [:div.blog-content
     (case format
       "html" content
