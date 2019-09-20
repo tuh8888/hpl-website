@@ -2,7 +2,8 @@
   (:require [hiccup.page :as page]
             [clojure.java.io :as io]
             [clojure.edn :as edn]
-            [hiccup.element :as el]))
+            [hiccup.element :as el]
+            [util :as hpl-util]))
 
 (def my-info (-> "my-info.edn"
                  (io/resource)
@@ -12,21 +13,28 @@
 (def sub-page "%s | %s")
 (def site-title (:name my-info))
 
+(defn linkify
+  "Convert named urls to list of links."
+  [links]
+  (map (fn [[name url]]
+         (el/link-to url name))
+       links))
+
 (defn nav-drop-down
   "Dropdown menu"
   [parent-url parent-content children]
   [:div.dropdown
    [:span (el/link-to parent-url parent-content)]
    (->> children
-        (map (fn [[url content]]
-               (el/link-to (format "%s/%s" parent-url url)
-                           content)))
+        (hpl-util/map-kv #(format "%s/%s" parent-url %))
+        (linkify)
         (into [:div.dropdown-content]))])
 
 (def nav
   (el/unordered-list [(el/link-to "/index" "Home")
-                      (nav-drop-down "/about" "About" {"research" "Research"
-                                                       "music"    "Music"})
+                      (nav-drop-down "/about" "About"
+                        {"Research" "research"
+                         "Music"    "music"})
                       (el/link-to "/contact" "Contact")
                       (el/link-to "/blog" "Blog")]))
 

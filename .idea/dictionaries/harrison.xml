@@ -3,6 +3,7 @@
     <words>
       <w>compojure</w>
       <w>defroutes</w>
+      <w>linkify</w>
     </words>
   </dictionary>
 </component>

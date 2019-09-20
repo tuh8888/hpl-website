@@ -1,7 +1,9 @@
-{:deps {compojure {:mvn/version "1.6.1"}
-        hiccup {:mvn/version "1.0.5"}
-        ring {:mvn/version "1.7.1"}
-        ring/ring-defaults {:mvn/version "0.3.2"}
-        ring/ring-jetty-adapter {:mvn/version "1.6.3"}
-        com.taoensso/timbre {:mvn/version "4.10.0"}}
+{:deps  {compojure               {:mvn/version "1.6.1"}
+         hiccup                  {:mvn/version "1.0.5"}
+         ring                    {:mvn/version "1.7.1"}
+         ring/ring-defaults      {:mvn/version "0.3.2"}
+         ring/ring-jetty-adapter {:mvn/version "1.6.3"}
+         com.taoensso/timbre     {:mvn/version "4.10.0"}
+         github-tuh8888/hpl-utl  {:git/url "git@github.com:tuh8888/hpl-util.git"
+                                  :sha     "700f544f03fea43dca541628e3f2e528e7e26233"}}
  :paths ["src" "resources"]}
