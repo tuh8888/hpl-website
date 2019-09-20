@@ -51,7 +51,7 @@
                                site-title)]
                (page/include-css "/css/index.css")]
               [:body
-               [:div [:h1 site-title]]
+               [:div#site-title [:h1 site-title]]
                [:div#nav nav]
-               [:div [:h2 (when page-title page-title)]]
-               [:div content]]))
+               [:div#page-title [:h2 (when page-title page-title)]]
+               [:div#content content]]))

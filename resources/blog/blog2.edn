@@ -1,4 +1,7 @@
-{:date "9/20/2019"
- :title "Markdown post"
+{:title "Markdown post"
  :format "md"
- :content "# This is a test\nsome code follows\n```clojure\n(defn foo [])\n```"}
+ :content "
+ # This is a test
+ some code follows
+ ```clojure\n(defn foo [])
+ ```"}

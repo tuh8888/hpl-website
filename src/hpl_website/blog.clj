@@ -6,19 +6,26 @@
             [markdown.core :as md]
             [hiccup.util :as hiccup-util])
   (:import (java.text SimpleDateFormat)
-           (java.util Date)))
+           (java.io File)))
 
 (def page-title "Blog")
+
+(defn read-blog-file
+  [f]
+  (-> f
+      (slurp)
+      (edn/read-string)
+      (assoc :date (.lastModified ^File f))))
 
 (def blogs (->> "blog"
                 (io/resource)
                 (io/file)
                 (file-seq)
                 (rest)
-                (map slurp)
-                (map edn/read-string)
-                (map (fn [blog] (update blog :date #(Date. ^String %))))
-                (sort-by :date)))
+                (map read-blog-file)
+                (sort-by :date)
+                (reverse)))
+
 
 (def display-date-format (SimpleDateFormat. "MMMM dd, yyyy"))
 
@@ -49,6 +56,6 @@
                    (filter #(or (not date)
                                 (= date (util/url-friendly-date (:date %))))))]
     (util/hpl-page page-title
-      [:div#blog
+      [:div#blogs
        (map display-blog blogs)])))
 

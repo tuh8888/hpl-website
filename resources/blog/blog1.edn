@@ -1,4 +1,3 @@
-{:date "9/20/2019"
- :title "First Post"
+{:title "First Post"
  :format "html"
  :content [:p "Today I went for a run."]}
