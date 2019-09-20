@@ -49,3 +49,11 @@ li.dropdown {
 .dropdown:hover .dropdown-content {
     display: block;
 }
+
+.blog {
+    margin: 0 auto;
+}
+
+.blog-content {
+    margin-left:50px;
+}

@@ -1,0 +1,4 @@
+{:date "9/20/2019"
+ :title "Markdown post"
+ :format "md"
+ :content "# This is a test\nsome code follows\n```clojure\n(defn foo [])\n```"}

@@ -3,7 +3,8 @@
             [clojure.java.io :as io]
             [clojure.edn :as edn]
             [hiccup.element :as el]
-            [util :as hpl-util]))
+            [util :as hpl-util])
+  (:import (java.text SimpleDateFormat)))
 
 (def my-info (-> "my-info.edn"
                  (io/resource)
@@ -12,6 +13,10 @@
                  (edn/read-string)))
 (def sub-page "%s | %s")
 (def site-title (:name my-info))
+
+(defn url-friendly-date
+  [date]
+  (.format (SimpleDateFormat. "MM-dd-yyyy") date))
 
 (defn linkify
   "Convert named urls to list of links."

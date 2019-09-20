@@ -19,7 +19,8 @@
               {"Ring" "https://github.com/ring-clojure/ring"
                "Compojure" "https://github.com/weavejester/compojure"
                "Hiccup" "https://github.com/weavejester/hiccup"
-               "Timbre" "https://github.com/ptaoussanis/timbre"}))]]))
+               "Timbre" "https://github.com/ptaoussanis/timbre"
+               "markdown-clj" "https://github.com/yogthos/markdown-clj"}))]]))
 
 
     (compojure/GET "/research" []

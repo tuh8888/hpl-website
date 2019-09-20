@@ -12,7 +12,7 @@
   (compojure/GET "/index" [] index/index)
   about/about-routes
   (compojure/GET "/contact" [] index/contact)
-  (compojure/GET "/blog" [date] (blog/index date))
+  (compojure/GET "/blog" [date title] (blog/index date title))
   (route/not-found "Not Found"))
 
 (def app (-> app-routes
