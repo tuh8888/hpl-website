@@ -50,10 +50,10 @@ li.dropdown {
     display: block;
 }
 
-.blog {
+#blog .post {
     margin: 0 auto;
 }
 
-.blog-content {
+#blog .post-content {
     margin-left:50px;
 }

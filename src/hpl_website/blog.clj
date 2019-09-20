@@ -10,22 +10,12 @@
 
 (def page-title "Blog")
 
-(defn read-blog-file
+(defn read-post
   [f]
   (-> f
       (slurp)
       (edn/read-string)
       (assoc :date (.lastModified ^File f))))
-
-(def blogs (->> "blog"
-                (io/resource)
-                (io/file)
-                (file-seq)
-                (rest)
-                (map read-blog-file)
-                (sort-by :date)
-                (reverse)))
-
 
 (def display-date-format (SimpleDateFormat. "MMMM dd, yyyy"))
 
@@ -35,13 +25,13 @@
   (hiccup-util/url "/blog" {:date  (util/url-friendly-date date)
                             :title title}))
 
-(defn display-blog
+(defn display-post
   "Display blog"
   [{:keys [date format title content] :as blog}]
-  [:div.blog
+  [:div.post
    [:h3 (el/link-to (blog-url blog) title)]
    [:p [:i (.format ^SimpleDateFormat display-date-format date)]]
-   [:div.blog-content
+   [:div.post-content
     (case format
       "html" content
       "md" (md/md-to-html-string content)
@@ -50,12 +40,19 @@
 
 (defn index
   [date title]
-  (let [blogs (->> blogs
-                   (filter #(or (not title)
-                                (= title (hiccup-util/escape-html (:title %)))))
-                   (filter #(or (not date)
-                                (= date (util/url-friendly-date (:date %))))))]
-    (util/hpl-page page-title
-      [:div#blogs
-       (map display-blog blogs)])))
+  (util/hpl-page page-title
+    [:div#blog
+     (->> "blog"
+          (io/resource)
+          (io/file)
+          (file-seq)
+          (rest)
+          (map read-post)
+          (sort-by :date)
+          (reverse)
+          (filter #(or (not title)
+                       (= title (hiccup-util/escape-html (:title %)))))
+          (filter #(or (not date)
+                       (= date (util/url-friendly-date (:date %)))))
+          (map display-post))]))
 
