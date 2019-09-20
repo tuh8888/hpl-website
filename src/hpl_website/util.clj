@@ -62,7 +62,8 @@
               [:head [:title (if page-title
                                (format sub-page site-title page-title)
                                site-title)]
-               (page/include-css "/css/index.css")]
+               (page/include-css "/css/index.css")
+               (page/include-css "/css/github-embed.css")]
               [:body
                [:div#site-title [:h1 site-title]]
                [:div#nav nav]
