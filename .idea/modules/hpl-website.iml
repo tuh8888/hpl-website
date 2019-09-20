@@ -43,8 +43,6 @@
     <orderEntry type="library" name="Deps: org.clojure/core.specs.alpha:0.2.44" level="project" />
     <orderEntry type="library" name="Deps: compojure:1.6.1" level="project" />
     <orderEntry type="library" name="Deps: hiccup:1.0.5" level="project" />
-    <orderEntry type="library" name="Deps: com.stuartsierra/component:0.4.0" level="project" />
-    <orderEntry type="library" name="Deps: com.stuartsierra/dependency:0.2.0" level="project" />
     <orderEntry type="library" name="Deps: ring/ring-jetty-adapter:1.6.3" level="project" />
     <orderEntry type="library" name="Deps: org.eclipse.jetty/jetty-server:9.2.21.v20170120" level="project" />
     <orderEntry type="library" name="Deps: org.eclipse.jetty/jetty-http:9.2.21.v20170120" level="project" />

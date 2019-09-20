@@ -1,4 +1,5 @@
 (ns hpl-website.core
+  (:gen-class)
   (:require [ring.adapter.jetty :as jetty]
             [ring.middleware.reload :refer [wrap-reload]]
             [hpl-website.handler :as handler]))
@@ -10,10 +11,9 @@
       (wrap-reload)
       (jetty/run-jetty {:port (Integer. ^String port)})))
 
-(comment
-  (let [port 3000]
-    (-> #'handler/app
-        (wrap-reload)
-        (jetty/run-jetty {:port  (Integer. port)
-                          :join? false}))))
+(let [port 3000]
+  (-> #'handler/app
+      (wrap-reload)
+      (jetty/run-jetty {:port  (Integer. port)
+                        :join? false})))
 
