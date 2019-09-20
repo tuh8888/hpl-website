@@ -18,6 +18,19 @@
   [date]
   (.format (SimpleDateFormat. "MM-dd-yyyy") date))
 
+(def display-date-format (SimpleDateFormat. "MMMM dd, yyyy"))
+
+(defn style [& info]
+  {:style (.trim (apply str (map #(let [[kwd val] %]
+                                    (str (name kwd) ":" val "; "))
+                                 (apply hash-map info))))})
+
+(defn =param?
+  "Filter if a parameter is present"
+  [param f k m]
+  (or (not param)
+      (= param (f (k m)))))
+
 (defn linkify
   "Convert named urls to list of links."
   [links]

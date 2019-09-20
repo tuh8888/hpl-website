@@ -17,7 +17,17 @@
       (edn/read-string)
       (assoc :date (.lastModified ^File f))))
 
-(def display-date-format (SimpleDateFormat. "MMMM dd, yyyy"))
+(defn read-blog-posts
+  "Read the current blog posts"
+  []
+  (->> "blog"
+       (io/resource)
+       (io/file)
+       (file-seq)
+       (rest)
+       (map read-post)
+       (sort-by :date)
+       (reverse)))
 
 (defn blog-url
   "Unique link for a particular blog entry."
@@ -27,32 +37,28 @@
 
 (defn display-post
   "Display blog"
-  [{:keys [date format title content] :as blog}]
+  [hide-overflow? {:keys [date format title content] :as blog}]
   [:div.post
+   (when hide-overflow?
+     (util/style :height "300px"
+                 :overflow "hidden"))
    [:h3 (el/link-to (blog-url blog) title)]
-   [:p [:i (.format ^SimpleDateFormat display-date-format date)]]
+   [:p [:i (.format ^SimpleDateFormat util/display-date-format date)]]
    [:div.post-content
     (case format
       "html" content
       "md" (md/md-to-html-string content)
-      :else content)]
-   [:hr]])
+      content)]
+   (when hide-overflow? [:hr])])
 
 (defn index
   [date title]
   (util/hpl-page page-title
     [:div#blog
-     (->> "blog"
-          (io/resource)
-          (io/file)
-          (file-seq)
-          (rest)
-          (map read-post)
-          (sort-by :date)
-          (reverse)
-          (filter #(or (not title)
-                       (= title (hiccup-util/escape-html (:title %)))))
-          (filter #(or (not date)
-                       (= date (util/url-friendly-date (:date %)))))
-          (map display-post))]))
+     (let [blogs (->> (read-blog-posts)
+                      (filter #(util/=param? title hiccup-util/escape-html :title %))
+                      (filter #(util/=param? date util/url-friendly-date :date %)))]
+       (if (= 1 (count blogs))
+         (display-post false (first blogs))
+         (map #(display-post true %) blogs)))]))
 
