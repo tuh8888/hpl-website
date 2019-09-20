@@ -11,9 +11,10 @@
       (wrap-reload)
       (jetty/run-jetty {:port (Integer. ^String port)})))
 
-(let [port 3000]
-  (-> #'handler/app
-      (wrap-reload)
-      (jetty/run-jetty {:port  (Integer. port)
-                        :join? false})))
+(comment
+  (let [port 3000]
+    (-> #'handler/app
+        (wrap-reload)
+        (jetty/run-jetty {:port  (Integer. port)
+                          :join? false}))))
 
