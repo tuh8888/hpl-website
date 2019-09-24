@@ -2,7 +2,8 @@
   (:require [compojure.core :as compojure]
             [hpl-website.util :as util]
             [hiccup.element :as el]
-            [clojure.data.json :as json]))
+            [clojure.data.json :as json]
+            [hiccup.page :as page]))
 
 (def page-title "About")
 
@@ -23,6 +24,7 @@
   (compojure/context "/about" []
     (compojure/GET "/" []
       (util/hpl-page page-title
+        [(page/include-css "/css/github-embed.css")]
         [:div
          [:p "The code for this site is shown below."]
          [:p "Built entirely in Clojure. Tools/packages used:"]

@@ -57,15 +57,17 @@
                       (el/link-to "/blog" "Blog")]))
 
 (defn hpl-page
-  [page-title content]
-  (page/html5 {:lang "en"}
-              [:head [:title (if page-title
-                               (format sub-page site-title page-title)
-                               site-title)]
-               (page/include-css "/css/index.css")
-               (page/include-css "/css/github-embed.css")]
-              [:body
-               [:div#site-title [:h1 site-title]]
-               [:div#nav nav]
-               [:div#page-title [:h2 (when page-title page-title)]]
-               [:div#content content]]))
+  ([page-title head content]
+   (page/html5 {:lang "en"}
+               (into [:head [:title (if page-title
+                                      (format sub-page site-title page-title)
+                                      site-title)]
+                      (page/include-css "/css/index.css")]
+                     head)
+               [:body
+                [:div#site-title [:h1 site-title]]
+                [:div#nav nav]
+                [:div#page-title [:h2 (when page-title page-title)]]
+                [:div#content content]]))
+  ([page-title content]
+   (hpl-page page-title nil content)))
