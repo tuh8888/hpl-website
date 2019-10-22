@@ -2,6 +2,46 @@
   (:require [hpl-website.util :refer [<sub >evt]]
             [hpl-website.subs-evts :as se]))
 
+(defn about
+  [])
+
+(defn music
+  [])
+
+(defn research
+  [])
+
+(defn contact
+  []
+  [:div
+   [:ul
+    (for [[source info] (<sub [::se/contact-info])]
+      ^{:key (random-uuid)}
+      [:li source ": "
+       [:a {:href info}
+        info]])]])
+
+(defn blog
+  [])
+
+(defn index
+  []
+  [:div#index
+   [:p "Hello, my name is " (<sub [::se/name]) "."]
+   [:p "I am a PhD. student at the "
+    [:a {:href (<sub [::se/school-link])}
+     (<sub [::se/school])]]])
+
+(defn body
+  []
+  (let [page (<sub [::page])]
+    (case page
+      "about" [about]
+      "research" [research]
+      "music" [music]
+      "contact" [contact]
+      "blog" [blog]
+      [index])))
 
 (defn nav-drop-down
   [parent-url parent-content children]
@@ -19,6 +59,7 @@
   []
   [:div#nav
    [:ul
+    ;;TODO fix navigation. maybe don't use links
     (for [item [[:a {:href "/index"} "Home"]
                 [nav-drop-down "/about" "About"
                  {"Research" "research"
@@ -28,13 +69,14 @@
       ^{:key (str (random-uuid))}
       [:li item])]])
 
+(defn title
+  []
+  [:div#site-title>h1
+   (<sub [::se/name])])
 
-(defn main-panel []
+(defn main-panel
+  []
   [:div
-   [:div#site-title>h1 (<sub [::se/name])]
+   [title]
    [nav]
-
-   [:p "Hello, my name is " (<sub [::se/name]) "."]
-   [:p "I am a PhD. student at the "
-    [:a {:href (<sub [::se/school-link])}
-     (<sub [::se/school])]]])
+   [body]])
