@@ -18,7 +18,18 @@
                  [org.clojure/tools.namespace "0.2.11"]
                  [compojure "1.6.1"]
                  [re-frame "0.10.6"]
-                 [lambdaisland/garden-watcher "0.3.3"]]
+                 [lambdaisland/garden-watcher "0.3.3"]
+
+                 ;; My deps
+                 [cljsjs/d3 "5.12.0-0"]
+                 [rid3 "0.2.1"]
+                 [district0x/re-frame-window-fx "1.0.2"]
+                 [org.clojars.stumitchell/clairvoyant "0.2.1"]
+                 [day8/re-frame-tracer "0.1.1-SNAPSHOT"]
+                 [day8.re-frame/http-fx "0.1.6"]
+                 [ring-transit "0.1.5"]
+                 [cljsjs/mousetrap "1.6.3-0"]
+                 [medley "1.1.0"]]
 
   :plugins [[lein-cljsbuild "1.1.7"]
             [lein-environ "1.1.0"]]

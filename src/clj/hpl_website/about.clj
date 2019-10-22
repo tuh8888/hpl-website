@@ -17,7 +17,6 @@
            :repo  "hpl-website"
            :ref   "master"
            :embed [{:path "README.md"}
-                   {:path "src/hpl_website/core.clj"}
                    {:path "src/hpl_website/about.clj"}]})
 
 (compojure/defroutes about-routes
