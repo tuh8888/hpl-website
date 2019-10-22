@@ -1,4 +1,5 @@
-{:deps  {compojure               {:mvn/version "1.6.1"}
+{:deps {
+         compojure               {:mvn/version "1.6.1"}
          hiccup                  {:mvn/version "1.0.5"}
          ring                    {:mvn/version "1.7.1"}
          ring/ring-defaults      {:mvn/version "0.3.2"}
