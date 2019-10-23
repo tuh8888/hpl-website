@@ -29,7 +29,8 @@
                  [day8.re-frame/http-fx "0.1.6"]
                  [ring-transit "0.1.5"]
                  [cljsjs/mousetrap "1.6.3-0"]
-                 [medley "1.1.0"]]
+                 [medley "1.1.0"]
+                 [metosin/reitit "0.3.9"]]
 
   :plugins [[lein-cljsbuild "1.1.7"]
             [lein-environ "1.1.0"]]
