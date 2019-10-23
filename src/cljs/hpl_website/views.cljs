@@ -3,7 +3,8 @@
             [hpl-website.subs-evts :as se]
             [reitit.core :as r]
             [reitit.frontend.easy :as rfe]
-            [clojure.string :as str]))
+            [clojure.string :as str]
+            [data-table.views :as dt]))
 
 (defn embed-github
   []
@@ -29,7 +30,13 @@
       [:li
        [:a {:href url}
         name]])]
-   #_[embed-github]])
+   #_[embed-github]
+   [dt/data-table  [::se/my-proficiencies]
+    [{:col-key [:name]}
+     {:col-key [:type]}]
+    {:row-options {}
+     :header (fn [i]
+               {:on-click #(println i)})}]])
 
 (defn music
   [])

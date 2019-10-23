@@ -54,3 +54,7 @@
 (reg-sub ::code-used
   (fn [db]
     (get-in db [:about :code])))
+
+(reg-sub ::my-proficiencies
+  (fn [db]
+    (get-in db [:my-info :proficiencies])))
