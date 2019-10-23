@@ -2,7 +2,8 @@
   (:require [hpl-website.util :refer [<sub >evt]]
             [hpl-website.subs-evts :as se]
             [reitit.core :as r]
-            [reitit.frontend.easy :as rfe]))
+            [reitit.frontend.easy :as rfe]
+            [clojure.string :as str]))
 
 (defn about
   [])
@@ -34,17 +35,6 @@
     [:a {:href (<sub [::se/school-link])}
      (<sub [::se/school])]]])
 
-#_(defn body
-    []
-    (let [page (<sub [::page])]
-      (case page
-        "about" [about]
-        "research" [research]
-        "music" [music]
-        "contact" [contact]
-        "blog" [blog]
-        [index])))
-
 (defn nav-drop-down
   [parent-url parent-content children]
   [:div.dropdown
@@ -57,19 +47,39 @@
       [:a {:href (str parent-url "/" link)}
        content])]])
 
+(defn recur-group-by
+  [i v]
+  (if (>= i (max (->> v
+                      (map :path)
+                      (map count)
+                      (apply max))))
+    v
+    (let [grouped (group-by #(nth (:path %) i "") v)]
+      (zipmap (keys grouped)
+              (->> grouped
+                   (vals)
+                   (map #(recur-group-by (inc i) %)))))))
+
+(comment
+    (let [routes (->> hpl-website.core/router
+                      (r/route-names)
+                      (map #(r/match-by-name hpl-website.core/router %)))
+          routes (map #(update % :path str/split #"/") routes)]
+      routes
+      (recur-group-by 0 routes #_[[0 1 2] [0 1 3] [0 2 2]])))
+
 (defn nav
   [{:keys [router current-route]}]
   [:div#nav
    [:ul
-    ;;TODO fix navigation. maybe don't use links
+    ;;TODO fix navigation.
     (for [route-name (r/route-names router)
           :let [route (r/match-by-name router route-name)
-                text (-> route :data :link-text)]]
+                text  (-> route :data :link-text)]]
       ^{:key route-name}
       [:li
-       (when (= route-name (-> current-route :data :name))
-         "> ")
        [:a {:href (rfe/href route-name nil nil)}
+        (when (= route-name (-> current-route :data :name)) "> ")
         text]])]])
 
 (defn title
@@ -100,12 +110,33 @@
   ; [:a {:href "/blog"} "Blog"]]
   ["/"
    [""
-    {:name ::home
-     :view home
+    {:name      ::home
+     :view      home
      :link-text "Home"
      :controllers
-     [{:start (fn [& params] (println "Entering home page"))
-       :stop (fn [& params] (println "Leaving home page"))}]}]])
+                [{:start (fn [& params] (println "Entering home page"))
+                  :stop  (fn [& params] (println "Leaving home page"))}]}]
+   ["about"
+    [""
+     {:name      ::about
+      :link-text "About"
+      :view      about}]
+    ["/research"
+     {:name      ::research
+      :link-text "Research"
+      :view      research}]
+    ["/music"
+     {:name      ::music
+      :link-text "Music"
+      :view      music}]]
+   ["blog"
+    {:name      ::blog
+     :link-text "Blog"
+     :view      blog}]
+   ["contact"
+    {:name      ::contact
+     :link-text "Contact"
+     :view      contact}]])
 
 (defn on-navigate [new-match]
   (when new-match
