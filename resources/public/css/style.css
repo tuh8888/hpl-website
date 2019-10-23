@@ -57,3 +57,42 @@ li.dropdown {
 #blog .post-content {
   margin-left: 50px;
 }
+
+div.ui.list div.item.active {
+  font-weight: bold;
+}
+
+div.ui.list div.item {
+  padding: .4em !important;
+}
+
+div.ui.list div.item:hover {
+  cursor: pointer;
+  background-color: #eee;
+}
+
+.muted {
+  color: grey !important;
+}
+
+table>thead th.sorted-by:after {
+  display: inline-block;
+}
+
+table>thead th.sorted-by.desc:after {
+  content: \f0d7;
+}
+
+table>thead th.sorted-by.asc:after {
+  content: \f0d8;
+}
+
+table>thead th:after {
+  display: none;
+  font-family: Icons;
+  margin-left: .5em;
+}
+
+tbody>tr.selected {
+  background-color: aqua;
+}

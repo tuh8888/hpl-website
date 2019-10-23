@@ -30,9 +30,28 @@
   [:.dropdown:hover
    [:.dropdown-content {:display :block}]]
 
+  ;;; BLOG
   [:#blog
    [:.post {:margin "0 auto"}]
-   [:.post-content {:margin-left "50px"}]])
+   [:.post-content {:margin-left "50px"}]]
+
+  ;;; TABLE
+  [:div.ui.list
+   [:div.item.active {:font-weight :bold}]
+   [:div.item {:padding ".4em !important"}
+    [:&:hover {:cursor :pointer
+               :background-color "#eee"}]]]
+  [:.muted {:color "grey !important"}]
+  [:table>thead
+   [:th.sorted-by
+    [:&:after {:display :inline-block}]]
+   [:th.sorted-by.desc:after {:content "\\f0d7"}]
+   [:th.sorted-by.asc:after {:content "\\f0d8"}]]
+  [:table>thead
+   [:th:after {:display :none;
+               :font-family :Icons;
+               :margin-left ".5em"}]]
+  [:tbody>tr.selected {:background-color :aqua}])
 
 
 

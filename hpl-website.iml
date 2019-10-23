@@ -197,5 +197,6 @@
     <orderEntry type="library" name="Leiningen: suspendable:0.1.1" level="project" />
     <orderEntry type="library" name="Leiningen: tech.droit/clj-diff:1.0.1" level="project" />
     <orderEntry type="library" name="Leiningen: tigris:0.1.1" level="project" />
+    <orderEntry type="library" name="semantic" level="application" />
   </component>
 </module>
