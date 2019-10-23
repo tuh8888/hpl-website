@@ -10,12 +10,12 @@
 
 (reg-sub ::name
   (fn [db]
-    (:name db)))
+    (get-in db [:my-info :name])))
 
 (reg-sub ::school-link
   (fn [db]
-    (:school-link db)))
+    (get-in db [:my-info :school-link])))
 
 (reg-sub ::school
   (fn [db]
-    (:school db)))
+    (get-in db [:my-info :school])))
