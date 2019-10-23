@@ -35,52 +35,62 @@
     [:a {:href (<sub [::se/school-link])}
      (<sub [::se/school])]]])
 
+(defn marked-link
+  [current-route route]
+  (let [route-name (get-in route [:data :name])
+        text       (get-in route [:data :link-text])]
+    [:a {:href (rfe/href route-name nil nil)}
+     (when (= route-name (-> current-route :data :name)) "> ")
+     text]))
+
 (defn nav-drop-down
-  [parent-url parent-content children]
+  [current-route parent-route child-routes]
   [:div.dropdown
    [:span
-    [:a {:href parent-url}
-     parent-content]]
+    [marked-link current-route parent-route]]
    [:div.dropdown-content
-    (for [[content link] children]
+    (for [route child-routes]
       ^{:key (str (random-uuid))}
-      [:a {:href (str parent-url "/" link)}
-       content])]])
+      [marked-link current-route route])]])
 
 (defn recur-group-by
-  [i v]
+  [f i v]
   (if (>= i (max (->> v
-                      (map :path)
+                      (map f)
                       (map count)
                       (apply max))))
     v
-    (let [grouped (group-by #(nth (:path %) i "") v)]
+    (let [grouped (group-by #(nth (f %) i "") v)]
       (zipmap (keys grouped)
               (->> grouped
                    (vals)
-                   (map #(recur-group-by (inc i) %)))))))
+                   (map #(recur-group-by f (inc i) %)))))))
 
-(comment
-    (let [routes (->> hpl-website.core/router
-                      (r/route-names)
-                      (map #(r/match-by-name hpl-website.core/router %)))
-          routes (map #(update % :path str/split #"/") routes)]
-      routes
-      (recur-group-by 0 routes #_[[0 1 2] [0 1 3] [0 2 2]])))
+(defn group-routes
+  [router]
+  (->> router
+       (r/route-names)
+       (map #(r/match-by-name router %))
+       (map #(update % :path str/split #"/"))
+       (recur-group-by :path 0)
+       (vals)
+       (first)
+       (vals)))
 
 (defn nav
   [{:keys [router current-route]}]
   [:div#nav
    [:ul
     ;;TODO fix navigation.
-    (for [route-name (r/route-names router)
-          :let [route (r/match-by-name router route-name)
-                text  (-> route :data :link-text)]]
-      ^{:key route-name}
+    (for [routes (group-routes router)]
+      ^{:key (str (random-uuid))}
       [:li
-       [:a {:href (rfe/href route-name nil nil)}
-        (when (= route-name (-> current-route :data :name)) "> ")
-        text]])]])
+       (if (vector? routes)
+         (for [route routes]
+           ^{:key (str (random-uuid))}
+           [marked-link current-route route])
+         [nav-drop-down current-route (first (get routes ""))
+                        (->> (dissoc routes "") (vals) (map first))])])]])
 
 (defn title
   []
@@ -101,13 +111,6 @@
      [body current-route]]))
 
 (def routes
-  ;;TODO add these routes
-  ;[[:a {:href "/index"} "Home"]
-  ; [nav-drop-down "/about" "About"
-  ;  {"Research" "research"
-  ;   "Music"    "music"}]
-  ; [:a {:href "/contact"} "Contact"]
-  ; [:a {:href "/blog"} "Blog"]]
   ["/"
    [""
     {:name      ::home
