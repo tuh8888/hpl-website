@@ -3,7 +3,10 @@
             [re-frame.core :as re-frame]
             [hpl-website.subs-evts]
             [hpl-website.views :as views]
-            [hpl-website.config :as config]))
+            [hpl-website.config :as config]
+            [reitit.frontend.easy :as rfe]
+            [reitit.frontend :as rf]
+            [reitit.coercion.spec :as rss]))
 
 (enable-console-print!)
 
@@ -12,9 +15,22 @@
     (enable-console-print!)
     (println "dev mode")))
 
+(def router
+  (rf/router
+    views/routes
+    {:data {:coercion rss/coercion}}))
+
+(defn init-routes! []
+  (println "initializing routes")
+  (rfe/start!
+    router
+    views/on-navigate
+    {:use-fragment true}))
+
 (defn mount-root []
   (re-frame/clear-subscription-cache!)
-  (reagent/render [views/main-panel]
+  (init-routes!)
+  (reagent/render [views/router-component {:router router}]
                   (.getElementById js/document "app")))
 
 (defn render []

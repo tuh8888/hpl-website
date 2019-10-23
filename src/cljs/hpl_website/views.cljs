@@ -1,6 +1,8 @@
 (ns hpl-website.views
   (:require [hpl-website.util :refer [<sub >evt]]
-            [hpl-website.subs-evts :as se]))
+            [hpl-website.subs-evts :as se]
+            [reitit.core :as r]
+            [reitit.frontend.easy :as rfe]))
 
 (defn about
   [])
@@ -24,7 +26,7 @@
 (defn blog
   [])
 
-(defn index
+(defn home
   []
   [:div#index
    [:p "Hello, my name is " (<sub [::se/name]) "."]
@@ -32,16 +34,16 @@
     [:a {:href (<sub [::se/school-link])}
      (<sub [::se/school])]]])
 
-(defn body
-  []
-  (let [page (<sub [::page])]
-    (case page
-      "about" [about]
-      "research" [research]
-      "music" [music]
-      "contact" [contact]
-      "blog" [blog]
-      [index])))
+#_(defn body
+    []
+    (let [page (<sub [::page])]
+      (case page
+        "about" [about]
+        "research" [research]
+        "music" [music]
+        "contact" [contact]
+        "blog" [blog]
+        [index])))
 
 (defn nav-drop-down
   [parent-url parent-content children]
@@ -56,27 +58,56 @@
        content])]])
 
 (defn nav
-  []
+  [{:keys [router current-route]}]
   [:div#nav
    [:ul
     ;;TODO fix navigation. maybe don't use links
-    (for [item [[:a {:href "/index"} "Home"]
-                [nav-drop-down "/about" "About"
-                 {"Research" "research"
-                  "Music"    "music"}]
-                [:a {:href "/contact"} "Contact"]
-                [:a {:href "/blog"} "Blog"]]]
-      ^{:key (str (random-uuid))}
-      [:li item])]])
+    (for [route-name (r/route-names router)
+          :let [route (r/match-by-name router route-name)
+                text (-> route :data :link-text)]]
+      ^{:key route-name}
+      [:li
+       (when (= route-name (-> current-route :data :name))
+         "> ")
+       [:a {:href (rfe/href route-name nil nil)}
+        text]])]])
 
 (defn title
   []
   [:div#site-title>h1
    (<sub [::se/name])])
 
-(defn main-panel
-  []
-  [:div
-   [title]
-   [nav]
-   [body]])
+(defn body
+  [route]
+  (when route
+    [(-> route :data :view)]))
+
+(defn router-component
+  [{:keys [router]}]
+  (let [current-route (<sub [::se/current-route])]
+    [:div
+     [title]
+     [nav {:router router :current-route current-route}]
+     [body current-route]]))
+
+(def routes
+  ;;TODO add these routes
+  ;[[:a {:href "/index"} "Home"]
+  ; [nav-drop-down "/about" "About"
+  ;  {"Research" "research"
+  ;   "Music"    "music"}]
+  ; [:a {:href "/contact"} "Contact"]
+  ; [:a {:href "/blog"} "Blog"]]
+  ["/"
+   [""
+    {:name ::home
+     :view home
+     :link-text "Home"
+     :controllers
+     [{:start (fn [& params] (println "Entering home page"))
+       :stop (fn [& params] (println "Leaving home page"))}]}]])
+
+(defn on-navigate [new-match]
+  (when new-match
+    (>evt [::se/navigated new-match])))
+

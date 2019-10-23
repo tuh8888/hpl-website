@@ -1,12 +1,35 @@
 (ns hpl-website.subs-evts
   (:require-macros [reagent.ratom :refer [reaction]])
   (:require [re-frame.core :refer [reg-event-db reg-event-fx
-                                   reg-sub]]
-            [hpl-website.db :as db]))
+                                   reg-sub
+                                   reg-fx]]
+            [hpl-website.db :as db]
+            [reitit.frontend.controllers :as rfc]
+            [reitit.frontend.easy :as rfe]))
 
 (reg-event-db :initialize-db
  (fn  [_ _]
    db/default-db))
+
+(reg-event-fx ::navigate
+  (fn [_ [_ & route]]
+    {::navigate! route}))
+
+(reg-event-db ::navigated
+  (fn [db [_ new-match]]
+    (let [old-match (:current-route db)
+          controllers (rfc/apply-controllers (:controllers old-match) new-match)]
+      (assoc db :current-route (assoc new-match :controllers controllers)))))
+
+(reg-fx
+  ::navigate!
+  (fn [route]
+    (apply rfe/push-state route)))
+
+(reg-sub
+  ::current-route
+  (fn [db]
+    (:current-route db)))
 
 (reg-sub ::name
   (fn [db]
