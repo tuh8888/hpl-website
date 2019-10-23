@@ -42,3 +42,15 @@
 (reg-sub ::school
   (fn [db]
     (get-in db [:my-info :school])))
+
+(reg-sub ::contact-info
+  (fn [db]
+    (get-in db [:my-info :contact-info])))
+
+(reg-sub ::tools-used
+  (fn [db]
+    (get-in db [:about :tools])))
+
+(reg-sub ::code-used
+  (fn [db]
+    (get-in db [:about :code])))

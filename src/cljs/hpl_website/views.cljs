@@ -5,8 +5,31 @@
             [reitit.frontend.easy :as rfe]
             [clojure.string :as str]))
 
+(defn embed-github
+  []
+  [:div
+   [:div#settings-object {:style {:height        "500px"
+                                  :margin-bottom "2rem"}}]
+   [:script {:src "https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.23.0/polyfill.min.js"}]
+   [:script {:src "/js/github-embed.min.js"}]
+   [:script (str "githubEmbed('#settings-object', "
+                 (->> (<sub [::se/code-used])
+                      (clj->js)
+                      (js/JSON.stringify))
+                 ");")]])
+
 (defn about
-  [])
+  []
+  [:div
+   [:p "The code for this site is shown below."]
+   [:p "Built entirely in Clojure. Tools/packages used:"]
+   [:ul
+    (for [[name url] (<sub [::se/tools-used])]
+      ^{:key (str (random-uuid))}
+      [:li
+       [:a {:href url}
+        name]])]
+   #_[embed-github]])
 
 (defn music
   [])
@@ -90,7 +113,7 @@
            ^{:key (str (random-uuid))}
            [marked-link current-route route])
          [nav-drop-down current-route (first (get routes ""))
-                        (->> (dissoc routes "") (vals) (map first))])])]])
+          (->> (dissoc routes "") (vals) (map first))])])]])
 
 (defn title
   []
@@ -117,8 +140,8 @@
      :view      home
      :link-text "Home"
      :controllers
-                [{:start (fn [& params] (println "Entering home page"))
-                  :stop  (fn [& params] (println "Leaving home page"))}]}]
+                [{:start (fn [& _] (println "Entering home page"))
+                  :stop  (fn [& _] (println "Leaving home page"))}]}]
    ["about"
     [""
      {:name      ::about
