@@ -1,5 +1,5 @@
 (ns hpl-website.views
-  (:require [hpl-website.util :refer [<sub >evt]]
+  (:require [hpl-website.util :refer [<sub >evt] :as util]
             [hpl-website.subs-evts :as se]
             [reitit.core :as r]
             [reitit.frontend.easy :as rfe]
@@ -19,6 +19,12 @@
                       (js/JSON.stringify))
                  ");")]])
 
+(defn proficiencies-header-render-fn
+  [pro]
+  (fn [_]
+    [:div {:on-click #(>evt [::se/toggle-sort-pros pro])}
+     pro]))
+
 (defn about
   []
   [:div
@@ -31,12 +37,25 @@
        [:a {:href url}
         name]])]
    #_[embed-github]
-   [dt/data-table  [::se/my-proficiencies]
-    [{:col-key [:name]}
-     {:col-key [:type]}]
-    {:row-options {}
-     :header (fn [i]
-               {:on-click #(println i)})}]])
+   [dt/data-table [::se/my-proficiencies]
+    (for [ pro  (<sub [::se/proficiencies-vals])]
+      {:col-key              [pro]
+       :col-header-render-fn (proficiencies-header-render-fn pro)
+       :col-header-options   {:class (str/join " "
+                                               ["sorted-by"
+                                                (if (<sub [::se/sorted-pro? pro])
+                                                  "asc"
+                                                  "desc")])}
+       :render-fn #(case pro
+                     :url [:a {:href %}
+                           %]
+                     %)})
+
+    #_[{:col-key [:type]}]
+    {:row-options (fn [i]
+                    {})
+     :header      (fn [i]
+                    {:on-click #(println i)})}]])
 
 (defn music
   [])
