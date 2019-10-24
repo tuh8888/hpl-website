@@ -1,5 +1,6 @@
 (ns hpl-website.util
   (:require [goog.object :as gobj]
+            [cljsjs.marked]
             [re-frame.core :refer [->interceptor
                                    get-coeffect assoc-coeffect
                                    get-effect assoc-effect]]))
@@ -99,6 +100,16 @@
          (remove #(= x %))
          (vec))
     (conj (or coll []) x)))
+
+(defn format-date
+  [date & {:keys [locale]
+           :or {locale "en-US"}}]
+  (.toLocaleDateString date "en-US"))
+
+(defn html->md
+  "Convert md to html."
+  [md]
+  (js/marked md))
 
 (defn recur-group-by
   [f i v]

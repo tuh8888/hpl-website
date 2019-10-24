@@ -1,10 +1,9 @@
 (ns hpl-website.views
-  (:require [hpl-website.util :refer [<sub >evt]]
+  (:require [hpl-website.util :refer [<sub >evt] :as util]
             [hpl-website.subs-evts :as se]
             [reitit.core :as r]
             [reitit.frontend.easy :as rfe]
             [clojure.string :as str]
-            [cljsjs.marked]
             [data-table.views :as dt]))
 
 (defn embed-github
@@ -96,10 +95,10 @@
              [:h3
               [:a {:href url}]
               title]
-             [:p [:i (.toLocaleDateString date "en-US")]]
+             [:p [:i (util/format-date date)]]
              (let [[content content'] (case format
                                         :html [nil content]
-                                        :md [nil (js/marked content)]
+                                        :md [nil (util/html->md content)]
                                         :hiccup [content]
                                         [content])]
                [:div.post-content
