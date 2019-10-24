@@ -6,14 +6,7 @@
                            :repo  "hpl-website"
                            :ref   "master"
                            :embed [{:path "README.md"}
-                                   {:path "src/cljs/hpl_website/views.clj"}]}
-                   :tools {:Ring         "https://github.com/ring-clojure/ring"
-                           :Compojure    "https://github.com/weavejester/compojure"
-                           :Hiccup       "https://github.com/weavejester/hiccup"
-                           :Timbre       "https://github.com/ptaoussanis/timbre"
-                           :markdown-clj "https://github.com/yogthos/markdown-clj"
-                           :re-frame     "https://github.com/Day8/re-frame"
-                           :garden       "https://github.com/noprompt/garden"}}
+                                   {:path "src/cljs/hpl_website/views.clj"}]}}
    :my-info       {:name          "Harrison Pielke-Lombardo"
                    :school        "University of Colorado, Anschutz Medical Campus"
                    :school-link   "http://www.ucdenver.edu/academics/colleges/Graduate-School/academic-programs/computational-bioscience/Pages/home.aspx"
@@ -28,6 +21,7 @@
                                     :parent [:clojure
                                              :javascript]}
                                    {:name   :Hiccup
+                                    :used-here true
                                     :type   :package
                                     :parent [:clojure :HTML]
                                     :use    :markup}
@@ -36,12 +30,14 @@
                                     :parent [:clojurescript
                                              :react]}
                                    {:name   :re-frame
+                                    :used-here true
                                     :type   :package
                                     :use    :web
                                     :url    "https://github.com/Day8/re-frame"
                                     :parent :reagent}
                                    {:name   :garden
                                     :type   :package
+                                    :used-here true
                                     :use    :web
                                     :url    "https://github.com/noprompt/garden"
                                     :parent [:clojurescript
@@ -206,6 +202,7 @@
                                     :type   :package
                                     :use    :logging
                                     :url    "https://github.com/ptaoussanis/timbre"
+                                    :used-here true
                                     :parent :clojure}
                                    {:name   :log-4j
                                     :type   :package
@@ -357,6 +354,7 @@
                                     :parent    :clojure}
                                    {:name   :Compojure
                                     :use    :web
+                                    :used-here true
                                     :type   :package
                                     :parent :Ring}
                                    {:name :knowledge-base

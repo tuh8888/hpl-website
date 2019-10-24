@@ -32,7 +32,7 @@
    [:p "The code for this site is shown below."]
    [:p "Built entirely in Clojure. Tools/packages used:"]
    [:ul
-    (for [[name url] (<sub [::se/tools-used])]
+    (for [{:keys [name url]} (<sub [::se/tools-used])]
       ^{:key (str (random-uuid))}
       [:li
        [:a {:href url}
@@ -84,7 +84,7 @@
              [:h3
               [:a {:href url}]
               title]
-             [:p [:i  (.toLocaleDateString date "en-US")]]
+             [:p [:i (.toLocaleDateString date "en-US")]]
              (let [[content content'] (case format
                                         :html [nil content]
                                         :md [nil (js/marked content)]

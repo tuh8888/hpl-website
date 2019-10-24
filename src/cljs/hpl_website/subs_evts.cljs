@@ -49,8 +49,9 @@
     (get-in db [:my-info :contact-info])))
 
 (reg-sub ::tools-used
-  (fn [db]
-    (get-in db [:about :tools])))
+  :< [::my-proficiencies]
+  (fn [tools]
+    (filter :used-here tools)))
 
 (reg-sub ::code-used
   (fn [db]
