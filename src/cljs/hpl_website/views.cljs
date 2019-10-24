@@ -29,7 +29,6 @@
 (defn about
   []
   [:div
-   [:p "The code for this site is shown below."]
    [:p "Built entirely in Clojure. Tools/packages used:"]
    [:ul
     (for [{:keys [name url]} (<sub [::se/tools-used])]

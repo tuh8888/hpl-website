@@ -15,20 +15,30 @@
                                    "LinkedIn" "https://www.linkedin.com/in/tuh8888/"}
                    :proficiencies [{:name   :clojure
                                     :type   :programming-language
-                                    :parent [:Java :Lisp]}
+                                    :parent [:Java :Lisp]
+                                    :url "https://clojure.org/"}
                                    {:name   :clojurescript
                                     :type   :programming-language
                                     :parent [:clojure
-                                             :javascript]}
+                                             :javascript]
+                                    :url "https://clojurescript.org/"}
+                                   {:name :reitit
+                                    :used-here true
+                                    :type :package
+                                    :parent :clojurescript
+                                    :use :routing
+                                    :url "https://github.com/metosin/reitit"}
                                    {:name   :Hiccup
                                     :used-here true
                                     :type   :package
                                     :parent [:clojure :HTML]
-                                    :use    :markup}
+                                    :use    :markup
+                                    :url "https://github.com/weavejester/hiccup"}
                                    {:name   :reagent
                                     :type   :web
                                     :parent [:clojurescript
-                                             :react]}
+                                             :react]
+                                    :url "https://holmsand.github.io/reagent/"}
                                    {:name   :re-frame
                                     :used-here true
                                     :type   :package
@@ -45,21 +55,26 @@
                                    {:name   :react
                                     :type   :framework
                                     :use    :web
-                                    :parent :javascript}
+                                    :parent :javascript
+                                    :url "https://reactjs.org/"}
                                    {:name :python
                                     :type :programming-language}
                                    {:name   :nltk
                                     :type   :package
                                     :use    :natural-language-processing
-                                    :parent :python}
+                                    :parent :python
+                                    :url  "https://www.python.org/"}
                                    {:name   :scikit-learn
                                     :type   :package
                                     :use    :machine-learning
-                                    :parent :python}
+                                    :parent :python
+                                    :url "https://scikit-learn.org/stable/index.html"}
                                    {:name :r
-                                    :type :programming-language}
+                                    :type :programming-language
+                                    :url "https://www.r-project.org/"}
                                    {:name :Java
-                                    :type :programming-language}
+                                    :type :programming-language
+                                    :url "https://www.java.com/"}
                                    {:name :javascript
                                     :type :programming-language}
                                    {:name :bash
