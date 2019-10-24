@@ -6,7 +6,9 @@
             [hpl-website.config :as config]
             [reitit.frontend.easy :as rfe]
             [reitit.frontend :as rf]
-            [reitit.coercion.spec :as rss]))
+            [reitit.coercion.spec :as rss]
+            [district0x.re-frame.window-fx]
+            [day8.re-frame.http-fx]))
 
 (enable-console-print!)
 

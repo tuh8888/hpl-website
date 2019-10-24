@@ -77,8 +77,9 @@
   [:div#blog
    (let [blogs (<sub [::se/blogs])]
      (->> (for [{:keys [date title content url]} blogs]
-            [:div.post (when (= 1 (count blogs)) {:height "300px"}
-                                                 :overflow :hidden)
+            ^{:key (random-uuid)}
+            [:div.post (when (< 1 (count blogs)) {:height   "300px"
+                                                  :overflow :hidden})
              [:h3
               [:a {:href url}]
               title]
@@ -137,7 +138,8 @@
    ["blogs"
     {:name      ::blogs
      :link-text "Blog"
-     :view      blog}]
+     :view      blog
+     :controllers [{:start #(>evt [::se/cache-blogs])}]}]
    ["contact"
     {:name      ::contact
      :link-text "Contact"
