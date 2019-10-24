@@ -84,10 +84,11 @@
              [:h3
               [:a {:href url}]
               title]
-             [:p [:i date]]
+             [:p [:i  (.toLocaleDateString date "en-US")]]
              (let [[content content'] (case format
                                         :html [nil content]
                                         :md [nil (js/marked content)]
+                                        :hiccup [content]
                                         [content])]
                [:div.post-content
                 (merge (when (< 1 (count blogs))

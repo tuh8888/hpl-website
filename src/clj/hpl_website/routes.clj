@@ -6,14 +6,15 @@
             [clojure.edn :as edn]
             #_[markdown.core :as md]
             [ring.middleware.transit :refer [wrap-transit-response]])
-  (:import [java.io File]))
+  (:import [java.io File]
+           [java.util Date]))
 
 (defn read-post
   [f]
   (-> f
       (slurp)
       (edn/read-string)
-      (assoc :date (.lastModified ^File f))))
+      (assoc :date (Date. (.lastModified ^File f)))))
 
 (defn read-blog-posts
   "Read the current blog posts"
