@@ -1,5 +1,5 @@
-{:title "Markdown post"
- :format "md"
+{:title   "Markdown post"
+ :format  :md
  :content "
  # This is a test
  some code follows

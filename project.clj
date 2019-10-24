@@ -30,7 +30,9 @@
                  [ring-transit "0.1.5"]
                  [cljsjs/mousetrap "1.6.3-0"]
                  [medley "1.1.0"]
-                 [metosin/reitit "0.3.9"]]
+                 [metosin/reitit "0.3.9"]
+                 #_[markdown-clj "1.10.0"]
+                 [cljsjs/showdown "1.8.6-0"]]
 
   :plugins [[lein-cljsbuild "1.1.7"]
             [lein-environ "1.1.0"]]

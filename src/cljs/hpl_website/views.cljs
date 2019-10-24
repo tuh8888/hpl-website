@@ -4,6 +4,7 @@
             [reitit.core :as r]
             [reitit.frontend.easy :as rfe]
             [clojure.string :as str]
+            [cljsjs.showdown]
             [data-table.views :as dt]))
 
 (defn embed-github
@@ -74,19 +75,28 @@
 
 (defn blog
   []
-  [:div#blog
-   (let [blogs (<sub [::se/blogs])]
-     (->> (for [{:keys [date title content url]} blogs]
-            ^{:key (random-uuid)}
-            [:div.post (when (< 1 (count blogs)) {:height   "300px"
-                                                  :overflow :hidden})
+  (let [blogs (<sub [::se/blogs])]
+    [:div#blog
+
+     (->> (for [{:keys [date title format content url]} blogs]
+            ^{:key (str (random-uuid))}
+            [:div.post
              [:h3
               [:a {:href url}]
               title]
              [:p [:i date]]
-             [:div.post-content
-              content]])                                    ;;TODO Format md as html
-          (interpose [:hr])))])
+             (let [[content content'] (case format
+                                        :html [content]
+                                        :md ["" (.makeHtml (js/showdown.Converter.) content)])]
+               [:div.post-content
+                (merge (when (< 1 (count blogs))
+                         {:style {:height   "100px"
+                                  :overflow :hidden}})
+                       {:dangerouslySetInnerHTML {:__html content'}})
+                content])
+
+
+             [:hr]]))]))                                    ;;TODO Format md as html)]))
 
 (defn single-blog
   [])
@@ -136,9 +146,9 @@
       :link-text "Music"
       :view      music}]]
    ["blogs"
-    {:name      ::blogs
-     :link-text "Blog"
-     :view      blog
+    {:name        ::blogs
+     :link-text   "Blog"
+     :view        blog
      :controllers [{:start #(>evt [::se/cache-blogs])}]}]
    ["contact"
     {:name      ::contact

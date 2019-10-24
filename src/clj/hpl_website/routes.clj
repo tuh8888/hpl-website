@@ -4,15 +4,21 @@
             [compojure.route :refer [resources]]
             [ring.util.response :refer [response]]
             [clojure.edn :as edn]
+            #_[markdown.core :as md]
             [ring.middleware.transit :refer [wrap-transit-response]])
   (:import [java.io File]))
 
 (defn read-post
   [f]
-  (-> f
-      (slurp)
-      (edn/read-string)
-      (assoc :date (.lastModified ^File f))))
+  (let [post (-> f
+                 (slurp)
+                 (edn/read-string)
+                 (assoc :date (.lastModified ^File f)))]
+    #_(update post :content #(case (:format post)
+                               :html %
+                               :md (md/md-to-html-string %)
+                               %))
+    post))
 
 (defn read-blog-posts
   "Read the current blog posts"
@@ -26,12 +32,6 @@
        (sort-by :date)
        (reverse)))
 
-(defn blogs
-  []
-  ;;TODO
-  (println  "here")
-  (read-blog-posts))
-
 (defn home-routes [_]
   (routes
    (GET "/" _
@@ -42,5 +42,5 @@
          (assoc :headers {"Content-Type" "text/html; charset=utf-8"})))
    (resources "/")
    (-> "/get-blogs/"
-       (GET _ (-> (blogs) (response)))
+       (GET _ (-> (read-blog-posts) (response)))
        (wrap-transit-response))))

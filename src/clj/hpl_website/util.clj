@@ -5,7 +5,7 @@
   (:import (java.text SimpleDateFormat)))
 
 (def sub-page "%s | %s")
-(def site-title (:name my-info))
+(def site-title (:name ""#_my-info))
 
 (defn url-friendly-date
   [date]
