@@ -349,11 +349,12 @@
                                     :type   :package
                                     :url    "https://github.com/incanter/incanter"
                                     :parent :clojure}
-                                   {:name   :Ring
-                                    :use    :web
-                                    :type   :package
-                                    :url    "https://github.com/ring-clojure/ring"
-                                    :parent :clojure}
+                                   {:name      :Ring
+                                    :used-here true
+                                    :use       :web
+                                    :type      :package
+                                    :url       "https://github.com/ring-clojure/ring"
+                                    :parent    :clojure}
                                    {:name   :Compojure
                                     :use    :web
                                     :type   :package

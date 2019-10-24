@@ -48,8 +48,8 @@
    [:th.sorted-by.desc:after {:content "\\f0d7"}]
    [:th.sorted-by.asc:after {:content "\\f0d8"}]]
   [:table>thead
-   [:th:after {:display :none;
-               :font-family :Icons;
+   [:th:after {:display :none
+               :font-family [:Icons :serif]
                :margin-left ".5em"}]]
   [:tbody>tr.selected {:background-color :aqua}])
 

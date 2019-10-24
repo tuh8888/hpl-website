@@ -89,7 +89,7 @@ table>thead th.sorted-by.asc:after {
 
 table>thead th:after {
   display: none;
-  font-family: Icons;
+  font-family: Icons, serif;
   margin-left: .5em;
 }
 

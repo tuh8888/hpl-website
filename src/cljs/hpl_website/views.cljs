@@ -1,5 +1,5 @@
 (ns hpl-website.views
-  (:require [hpl-website.util :refer [<sub >evt] :as util]
+  (:require [hpl-website.util :refer [<sub >evt]]
             [hpl-website.subs-evts :as se]
             [reitit.core :as r]
             [reitit.frontend.easy :as rfe]
@@ -38,7 +38,7 @@
         name]])]
    #_[embed-github]
    [dt/data-table [::se/my-proficiencies]
-    (for [ pro  (<sub [::se/proficiencies-vals])]
+    (for [pro (<sub [::se/proficiencies-vals])]
       {:col-key              [pro]
        :col-header-render-fn (proficiencies-header-render-fn pro)
        :col-header-options   {:class (str/join " "
@@ -46,13 +46,12 @@
                                                 (if (<sub [::se/sorted-pro? pro])
                                                   "asc"
                                                   "desc")])}
-       :render-fn #(case pro
-                     :url [:a {:href %}
-                           %]
-                     %)})
+       :render-fn            #(case pro
+                                :url [:a {:href %}
+                                      %]
+                                %)})
 
-    #_[{:col-key [:type]}]
-    {:row-options (fn [i]
+    {:row-options (fn [_]
                     {})
      :header      (fn [i]
                     {:on-click #(println i)})}]])
@@ -74,7 +73,19 @@
         info]])]])
 
 (defn blog
-  [])
+  []
+  [:div#blog
+   (let [blogs (<sub [::se/blogs])]
+     (->> (for [{:keys [date title content url]} blogs]
+            [:div.post (when (= 1 (count blogs)) {:height "300px"}
+                                                 :overflow :hidden)
+             [:h3
+              [:a {:href url}]
+              title]
+             [:p [:i date]]
+             [:div.post-content
+              content]])                                    ;;TODO Format md as html
+          (interpose [:hr])))])
 
 (defn home
   []
