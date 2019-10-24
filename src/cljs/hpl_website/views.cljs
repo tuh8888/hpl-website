@@ -26,17 +26,22 @@
     [:div {:on-click #(>evt [::se/toggle-sort-pros pro])}
      pro]))
 
-(defn about
+(defn about-this-site
   []
   [:div
    [:p "Built entirely in Clojure. Tools/packages used:"]
+   #_[embed-github]
    [:ul
     (for [{:keys [name url]} (<sub [::se/tools-used])]
       ^{:key (str (random-uuid))}
       [:li
        [:a {:href url}
-        name]])]
-   #_[embed-github]
+        name]])]])
+
+(defn tool-table
+  "Table of my tools"
+  []
+  [:div
    [dt/data-table [::se/my-proficiencies]
     (for [pro (<sub [::se/proficiencies-vals])]
       {:col-key              [pro]
@@ -55,6 +60,14 @@
                     {})
      :header      (fn [_]
                     {:on-click #()})}]])
+
+(defn about
+  []
+  [:div
+   ;; TODO Add some d3 tables summarizing tables below
+   ;; TODO Add ability to search.
+   [tool-table]
+   [about-this-site]])
 
 (defn music
   [])
