@@ -10,15 +10,10 @@
 
 (defn read-post
   [f]
-  (let [post (-> f
-                 (slurp)
-                 (edn/read-string)
-                 (assoc :date (.lastModified ^File f)))]
-    #_(update post :content #(case (:format post)
-                               :html %
-                               :md (md/md-to-html-string %)
-                               %))
-    post))
+  (-> f
+      (slurp)
+      (edn/read-string)
+      (assoc :date (.lastModified ^File f))))
 
 (defn read-blog-posts
   "Read the current blog posts"

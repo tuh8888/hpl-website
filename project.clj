@@ -32,7 +32,7 @@
                  [medley "1.1.0"]
                  [metosin/reitit "0.3.9"]
                  #_[markdown-clj "1.10.0"]
-                 [cljsjs/showdown "1.8.6-0"]]
+                 [cljsjs/marked "0.3.5-1"]]
 
   :plugins [[lein-cljsbuild "1.1.7"]
             [lein-environ "1.1.0"]]

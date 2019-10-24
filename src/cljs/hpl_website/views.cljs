@@ -4,7 +4,7 @@
             [reitit.core :as r]
             [reitit.frontend.easy :as rfe]
             [clojure.string :as str]
-            [cljsjs.showdown]
+            [cljsjs.marked]
             [data-table.views :as dt]))
 
 (defn embed-github
@@ -86,17 +86,16 @@
               title]
              [:p [:i date]]
              (let [[content content'] (case format
-                                        :html [content]
-                                        :md ["" (.makeHtml (js/showdown.Converter.) content)])]
+                                        :html [nil content]
+                                        :md [nil (js/marked content)]
+                                        [content])]
                [:div.post-content
                 (merge (when (< 1 (count blogs))
                          {:style {:height   "100px"
                                   :overflow :hidden}})
-                       {:dangerouslySetInnerHTML {:__html content'}})
+                       (when content' {:dangerouslySetInnerHTML {:__html content'}}))
                 content])
-
-
-             [:hr]]))]))                                    ;;TODO Format md as html)]))
+             [:hr]]))]))
 
 (defn single-blog
   [])
