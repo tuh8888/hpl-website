@@ -96,3 +96,7 @@
 (reg-sub ::proficiencies-vals
   :<- [::my-proficiencies]
   unique-keys)
+
+(reg-sub ::blogs
+  (fn [db]
+    ()))

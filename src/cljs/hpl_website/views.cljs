@@ -53,8 +53,8 @@
 
     {:row-options (fn [_]
                     {})
-     :header      (fn [i]
-                    {:on-click #(println i)})}]])
+     :header      (fn [_]
+                    {:on-click #()})}]])
 
 (defn music
   [])
@@ -87,6 +87,9 @@
               content]])                                    ;;TODO Format md as html
           (interpose [:hr])))])
 
+(defn single-blog
+  [])
+
 (defn home
   []
   [:div#index
@@ -113,44 +116,52 @@
       ^{:key (str (random-uuid))}
       [marked-link current-route route])]])
 
-(defn recur-group-by
-  [f i v]
-  (if (>= i (max (->> v
-                      (map f)
-                      (map count)
-                      (apply max))))
-    v
-    (let [grouped (group-by #(nth (f %) i "") v)]
-      (zipmap (keys grouped)
-              (->> grouped
-                   (vals)
-                   (map #(recur-group-by f (inc i) %)))))))
-
-(defn group-routes
-  [router]
-  (->> router
-       (r/route-names)
-       (map #(r/match-by-name router %))
-       (map #(update % :path str/split #"/"))
-       (recur-group-by :path 0)
-       (vals)
-       (first)
-       (vals)))
+(def nav-routes
+  [[""
+    {:name      ::home
+     :view      home
+     :link-text "Home"}]
+   ["about"
+    [""
+     {:name      ::about
+      :link-text "About"
+      :view      about}]
+    ["/research"
+     {:name      ::research
+      :link-text "Research"
+      :view      research}]
+    ["/music"
+     {:name      ::music
+      :link-text "Music"
+      :view      music}]]
+   ["blogs"
+    {:name      ::blogs
+     :link-text "Blog"
+     :view      blog}]
+   ["contact"
+    {:name      ::contact
+     :link-text "Contact"
+     :view      contact}]])
 
 (defn nav
   [{:keys [router current-route]}]
   [:div#nav
    [:ul
     ;;TODO fix navigation.
-    (for [routes (group-routes router)]
+    (for [route (->> nav-routes
+                     (map rest)
+                     (map (fn [v]
+                            (if (= (count v) 1)
+                              (->> v (first) (:name) (r/match-by-name router))
+                              (map #(->> % (second) :name (r/match-by-name router))
+                                   v)))))]
       ^{:key (str (random-uuid))}
       [:li
-       (if (vector? routes)
-         (for [route routes]
-           ^{:key (str (random-uuid))}
-           [marked-link current-route route])
-         [nav-drop-down current-route (first (get routes ""))
-          (->> (dissoc routes "") (vals) (map first))])])]])
+       (if (map? route)
+         [marked-link current-route route]
+         [nav-drop-down current-route
+          (first route)
+          (rest route)])])]])
 
 (defn title
   []
@@ -172,34 +183,11 @@
 
 (def routes
   ["/"
-   [""
-    {:name      ::home
-     :view      home
-     :link-text "Home"
-     :controllers
-                [{:start (fn [& _] (println "Entering home page"))
-                  :stop  (fn [& _] (println "Leaving home page"))}]}]
-   ["about"
-    [""
-     {:name      ::about
-      :link-text "About"
-      :view      about}]
-    ["/research"
-     {:name      ::research
-      :link-text "Research"
-      :view      research}]
-    ["/music"
-     {:name      ::music
-      :link-text "Music"
-      :view      music}]]
-   ["blog"
-    {:name      ::blog
-     :link-text "Blog"
-     :view      blog}]
-   ["contact"
-    {:name      ::contact
-     :link-text "Contact"
-     :view      contact}]])
+   [nav-routes]
+   ["blog/:id"
+    {:name ::blog
+     :view single-blog}]])
+
 
 (defn on-navigate [new-match]
   (when new-match

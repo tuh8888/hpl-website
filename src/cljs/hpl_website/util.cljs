@@ -99,3 +99,16 @@
          (remove #(= x %))
          (vec))
     (conj (or coll []) x)))
+
+(defn recur-group-by
+  [f i v]
+  (if (>= i (max (->> v
+                      (map f)
+                      (map count)
+                      (apply max))))
+    v
+    (let [grouped (group-by #(nth (f %) i) v)]
+      (zipmap (keys grouped)
+              (->> grouped
+                   (vals)
+                   (map #(recur-group-by f (inc i) %)))))))
