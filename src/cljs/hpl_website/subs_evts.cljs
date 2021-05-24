@@ -27,8 +27,7 @@
   (fn [route]
     (apply rfe/push-state route)))
 
-(reg-sub
-  ::current-route
+(reg-sub ::current-route
   (fn [db]
     (:current-route db)))
 
@@ -49,7 +48,7 @@
     (get-in db [:my-info :contact-info])))
 
 (reg-sub ::tools-used
-  :< [::my-proficiencies]
+  :<- [::my-proficiencies]
   (fn [tools]
     (filter :used-here tools)))
 
